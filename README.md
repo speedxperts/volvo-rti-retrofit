@@ -1,12 +1,14 @@
 # Volvo RTI Retrofit
 Volvo P2 RTI retrofit with Android Auto, Carplay, Handsfree etc.
 
-# Version r1.1
+# Version r1.2
 
 Welcome to the OpenAutoPro project tailored for the Volvo P2! This project enhances your driving experience by integrating a Raspberry Pi and Arduino into your vehicle, replacing the Control Module from the RTI system. Utilizing the stock RTI display and controls ensures seamless integration.
 
+For more information: [SpeedXperts website](https://speedxperts.com/volvo-rti-retrofit/)
+
 RTI Retrofit - Android Auto
-![RTI Retrofit - Android Auto](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/INT2.jpg)
+![RTI Retrofit - Android Auto](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/INT2.jpg)
 
 # Special Thanks
 
@@ -15,7 +17,8 @@ I would like to extend my sincere thanks to the following contributors who have 
 - **klalle**: For updated AUX script and contributions. Check out their GitHub gist [here](https://gist.github.com/klalle/1ae1bfec5e2506918a3f89492180565e).
 - **laurynas**: For developing the Volvo LINbus reader program, which played a crucial role in integrating SWM buttons into the OpenAutoPro system. Find the program [here](https://github.com/laurynas/volvo_linbus).
 - **Luuk**: Their resource on enabling Android Auto on Volvo RTI systems has been immensely helpful. More details can be found [here](https://luuk.cc/p/vD2f/Android_Auto_on_Volvo_RTI).
-- **BlueWaveStudio Team** For developing OpenAutoPro. More details can be found [here](https://bluewavestudio.io/).
+- **BlueWaveStudio Team** For developing OpenAuto Pro. This Project is unfortunately closed!
+- **KreAch3R**: For making Android Auto Wireless available again! More details: [here](https://github.com/KreAch3R/aa-proxy-oap).
 
 Your contributions have significantly enriched this project, and I deeply appreciate your efforts. Thank you!
 
@@ -24,30 +27,31 @@ Your contributions have significantly enriched this project, and I deeply apprec
 - Android Auto Wireless
 - Original display via serial video
 - Opening and closing the display using buttons Enter+Back.
-- Change the display brightness using buttons Next+Yes/No.
 - The buttons on the steering wheel, including RTI buttons.
 - Rear camera
+- Automatic brightness control (That needs to be updated)
 
 ## Future works:
 - Add OBD info
 - Add a small battery to maintain power during engine startup
 - A better case for all the components
-
-[![Buy me a coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-%23FFDD00.svg?&style=flat&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/samelyuk)
+- More stable and open source system instead of OpenAuto Pro
 
 # Table of Contents
 1. [Connection Overview](#connection-overview)
    - [Necessary Components](#necessary-components)
    - [Cable Management](#cable-management)
+   - [Display Cable Connection](#display-cable-connection)
    - [SWM Button Configuration - LIN bus](#swm-button-configuration---lin-bus)
-   - [RTI Control Module Setup](#rti-control-module-setup)
    - [AUX Integration](#aux-integration)
-   - [RTI Extender Cable Scheme](#rti-extender-cable-scheme)
+   - [RTI Control Module Setup](#rti-control-module-setup)
    - [RTI Control Module Scheme](#rti-control-module-scheme)
+   - [RTI Extender Cable Scheme](#rti-extender-cable-scheme)
+   - [Rear Camera](#rear-camera)
+   - [Automatic Brightness Control](#automatic-brightness-control)
 2. [Programming Details](#programming-details)
-   - [Arduino 1: Handling button inputs via LIN bus](#arduino-1-handling-button-inputs-via-lin-bus-controlling-the-rti-display)
-   - [Arduino 2: Emulating a CD changer for AUX functionality](#arduino-2-emulating-a-cd-changer-for-aux-functionality)
    - [Raspberry Pi: OpenAutoPro installation, setup, Arduino connectivity, and configuring the splash screen](#raspberry-pi-openautopro-installation-setup-arduino-connectivity-and-configuring-the-splash-screen)
+   - [Enabling Android Auto](#enabling-android-auto)
 
 ## Connection Overview
 
@@ -62,10 +66,11 @@ Your contributions have significantly enriched this project, and I deeply apprec
 - Ground Loop Isolator - From [Aliexpress](https://shorturl.at/lSVW0)
 - Various cables, connectors, etc.
 - Rear Camera for P2 [Aliexpress](https://www.aliexpress.com/item/1005006792687999.html?spm=a2g0o.order_list.order_list_main.5.a2201802Ed3mHx)
-- Analog video Converter [Aliexpress](https://www.aliexpress.com/item/1005005445050331.html?spm=a2g0o.order_list.order_list_main.11.a2201802Ed3mHx)
+- Photoresistor
+- Resistor R1 10k
   
 RTI Retrofit - OpenAutoPro
-![RTI Retrofit - OpenAutoPro](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/INT1.jpg)
+![RTI Retrofit - OpenAutoPro](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/INT1.jpg)
 
 ### Cable Management
 Efficient cable management is essential for organizing the components of the OpenAutoPro project within the Volvo S60 D5. Let's discuss how we've optimized cable routing for a tidy and functional setup.
@@ -77,9 +82,9 @@ Power Source Selection
 - The 12V socket offers the advantage of cutting off power entirely when the ignition is switched off, reducing the risk of power drain.
 - In future iterations, I plan to incorporate a small battery to maintain power during engine startup, further enhancing system reliability.
 
-![RTI Controll module](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI-box1.jpg)
-![RTI Controll module Disassembley](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI-box2.jpg)
-![RTI Controll module Disassembled](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI-box3.jpg)
+![RTI Controll module](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI-box1.jpg)
+![RTI Controll module Disassembley](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI-box2.jpg)
+![RTI Controll module Disassembled](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI-box3.jpg)
 
 ### Display Cable Connection:
 Incorporating the RTI (Road and Traffic Information) display into the OpenAutoPro system requires a meticulous approach to cable connection. Let's break down the cable setup for seamless integration.
@@ -88,46 +93,40 @@ Cable Components:
 - Ground Cable: Ensures proper grounding for stable operation and electrical safety.
 - Display Serial Cable: Facilitates communication between the display and the system, enabling control and data exchange.
 
-![RTI Display Pinout](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/rti-disp.png)
+![RTI Display Pinout](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/rti-disp.png)
 
 ### SWM Button Configuration - LIN bus
 The SWM buttons from the steering wheel, along with the RTI buttons, will be read through the LIN bus. We will utilize the original Arduino Nano with MCP2025 and the "laurynas" Volvo LINbus reader program (https://github.com/laurynas/volvo_linbus). Simply pressing the required button is sufficient to view the LIN bus key code from our buttons, without the need to turn on the ignition. The key code for the Volvo S60 2008 appears as follows: Enter button: “ C1 3F 20 A0 ”
 
 The cables from the SWM/SAS are located up to the steering wheel, under the cover. See blue arrow.
-![SWM Location](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/SWM%20Location.png)
-![SWM Pinout](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/SWM%20Pins.png)
-
-### RTI Control Module Setup
-I have removed almost everything from the RTI Control Module box. I only left two connectors: an 8-pin DIN socket and a 10-pin connector from the display. I have placed all the computing components in this box: Raspberry Pi with all its components, a step-down converter, and two Arduino microcontrollers on a PCB.
-
-RTI New Setup (Will be updated)
-![RTI New Setup (Will be updated)](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI-now.jpg)
-
-RTI Old Setup
-![RTI Old Setup](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI-old.jpg)
+![SWM Location](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/SWM%20Location.png)
+![SWM Pinout](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/SWM%20Pins.png)
 
 ### AUX Integration
 While the Volvo S60 from 2008 typically comes equipped with an AUX input, my model had its radio upgraded to the HU-850, an older version lacking this feature. Following Karl Hagström's guide (https://gizmosnack.blogspot.com/2015/11/aux-in-volvo-hu-xxxx-radio.html), I created a CD changer emulator using an Arduino Nano clone.
 
-![Radio Pinout](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/Radio%20Pins.png)
+![Radio Pinout](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/Radio%20Pins.png)
 
-### Rear Camera
-I found a rear camera specifically for the Volvo P2, and its installation is straightforward. First, connect the camera power to a step-down converter from the 12V side. Next, connect the camera's video output to an analog video converter, which then connects to the Raspberry Pi via USB.
-
-To activate the camera when shifting into reverse, we will use a script integrated into OpenAuto Pro. In the rear camera settings, set Pin 17. Then, take two wires from the reverse light and connect them to a relay. Additionally, take two wires from the Raspberry Pi GPIO: 3V3 power and GPIO 17, and connect them to the relay.
-![RPI Gpio](https://www.raspberrypi.com/documentation/computers/images/GPIO-Pinout-Diagram-2.png)
-
-When the reverse light is activated, the relay opens power to GPIO 17 on the Raspberry Pi, prompting OpenAuto Pro to start the camera.
-
-### RTI Extender Cable Scheme
-![RTI Control Module](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI%20Cable%20Extender%20Scheme.png)
+### RTI Control Module Setup
+I have removed almost everything from the RTI Control Module box. I only left three connectors: an 8-pin DIN socket, a 10-pin connector from the display and 5 pin Blue Connector. I have placed all the computing components in this box: Raspberry Pi with all its components, a step-down converter, and two Arduino microcontrollers on a PCB. Here is Temporary-Permanent set-up:
+![RTI New Setup (Will be updated)](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI-now.jpg)
 
 ### RTI Control Module Scheme
-![RTI Control Module](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/RTI%20Control%20Module%20Scheme.jpg)
+![RTI Control Module](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI%20Control%20Module%20Scheme.jpg)
 
-## Programming Details (SOON)
+### RTI Extender Cable Scheme
+![RTI Cable Extender](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/RTI%20Cable%20Extender%20Scheme.png)
+![RTI Extender Photo](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/extender.jpg)
 
-![Image Description](https://github.com/samelyuk/volvo-rti-retrofit/blob/main/doc/S60.jpg)
+### Rear Camera
+I found a rear camera specifically for the Volvo P2, and its installation is straightforward. First, connect the camera power to a step-down converter from the 12V side. Next, connect the camera's video output to 5V Relay. Which will switch from RPi to Camera, when the reverse light is on. See Control module scheme.
+![RTI Rear Camera](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/camera1.jpg)
+![RTI Rear Camera P2](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/camera2.jpg)
+
+### Automatic Brightness Control
+Initially, the brightness was configurable but required manual adjustment. Due to the absence of buttons, I decided to automate it. I installed a photoresistor under the rear glass and connected it to the Arduino Nano via the blue connector (refer to the schematic).
+
+## Programming Details
 
 ### Raspberry Pi: OpenAutoPro installation, setup, Arduino connectivity, and configuring the splash screen
 
@@ -205,8 +204,14 @@ To set up the Volvo splash screen on your Raspberry Pi:
 To set up the equalizer configuration:
 
 1. Move the `openauto_equalizer.ini` equalizer settings to: '/home/pi/.openautopro/config/'
+
+### Enabling Android Auto
+After the latest Android Auto update (v12.6), the built-in OpenAuto Pro version stopped working. Thanks to KreAch3R, it’s now possible to reactivate it. [Follow his guide here to make it work again.](https://github.com/KreAch3R/aa-proxy-oap)
+
+However, I’ve noticed some issues: the "Next/Previous Track" and "Play/Pause" buttons no longer function, and starting Android Auto from the OpenAuto Pro menu is no longer possible (it only works on system startup). These issues should be addressed in a future update.
    
 ---
 
 With these steps completed, your Raspberry Pi should be properly configured for your project, with the required scripts and configurations in place.
 
+![Image Description](https://github.com/speedxperts/volvo-rti-retrofit/blob/main/doc/S60.jpg)
